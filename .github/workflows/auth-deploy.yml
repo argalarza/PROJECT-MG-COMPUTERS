@@ -1,4 +1,4 @@
-name: Run Auth Services on AWS EC2
+name: 🖥️ Run Auth Services on AWS EC2 🚀
 
 on:
   push:
@@ -10,26 +10,28 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Services on AWS EC2
-    runs-on: ubuntu-latest
+    name: 🚀 Deploy Services on AWS EC2 🌐
+    runs-on: amazon-linux-2  # Cambiado a Amazon Linux en lugar de Ubuntu
     steps:
 
-      - name: Deploy to EC2 - Role Authentication
+      - name: 🚀 Deploy to EC2 - Role Authentication 🛠️
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST_AUTH }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sudo docker network create app-network  
-            echo "Pulling latest image for Role Authentication..."
+            echo "🛠️ Creating Docker network for app..."
+            sudo docker network create app-network
+
+            echo "🔄 Pulling latest image for Role Authentication..."
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/role-auth:latest
 
-            echo "Stopping and removing existing container..."
-            sudo docker stop role-auth || echo "No existing container"
-            sudo docker rm role-auth || echo "No existing container"
+            echo "🛑 Stopping and removing existing container if any..."
+            sudo docker stop role-auth || echo "🔴 No existing container"
+            sudo docker rm role-auth || echo "🔴 No existing container"
 
-            echo "Starting Role Auth container..."
+            echo "🚀 Starting Role Auth container..."
             sudo docker run -d --name role-auth \
               -p 83:80 \
               -e SECRET_KEY=${{ secrets.AUTH_SECRET_KEY }} \
@@ -37,14 +39,14 @@ jobs:
               --restart unless-stopped \
               ${{ secrets.DOCKER_USERNAME }}/role-auth:latest
 
-            echo "Pulling latest image for Login..."
+            echo "🔄 Pulling latest image for Login..."
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/login:latest
 
-            echo "Stopping and removing existing container..."
-            sudo docker stop login || echo "No existing container"
-            sudo docker rm login || echo "No existing container"
+            echo "🛑 Stopping and removing existing container if any..."
+            sudo docker stop login || echo "🔴 No existing container"
+            sudo docker rm login || echo "🔴 No existing container"
 
-            echo "Starting Login container..."
+            echo "🚀 Starting Login container..."
             sudo docker run -d --name login \
               -p 443:443 \
               -e SECRET_KEY=${{ secrets.AUTH_SECRET_KEY }} \
@@ -57,14 +59,14 @@ jobs:
               --restart unless-stopped \
               ${{ secrets.DOCKER_USERNAME }}/login:latest
 
-            echo "Pulling latest image for Logout..."
+            echo "🔄 Pulling latest image for Logout..."
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/logout:latest
 
-            echo "Stopping and removing existing container..."
-            sudo docker stop logout || echo "No existing container"
-            sudo docker rm logout || echo "No existing container"
+            echo "🛑 Stopping and removing existing container if any..."
+            sudo docker stop logout || echo "🔴 No existing container"
+            sudo docker rm logout || echo "🔴 No existing container"
 
-            echo "Starting Logout container..."
+            echo "🚀 Starting Logout container..."
             sudo docker run -d --name logout \
               -p 82:80 \
               -e SECRET_KEY=${{ secrets.AUTH_SECRET_KEY }} \

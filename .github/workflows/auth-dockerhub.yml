@@ -1,4 +1,4 @@
-name: Push Auth Services to Docker Hub
+name: 🚀 Push Auth Services to Docker Hub 🐳
 
 on:
   push:
@@ -9,20 +9,20 @@ on:
 
 jobs:
   push_to_registry:
-    name: Push Docker Images to Docker Hub
-    runs-on: ubuntu-latest
+    name: 📦 Push Docker Images to Docker Hub 🌍
+    runs-on: amazon-linux-2  # Cambiado a Amazon Linux en lugar de Ubuntu
     steps:
-      - name: Check out the repository
+      - name: 📂 Check out the repository
         uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
+      - name: 🔑 Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Role Authentication Image
-      - name: Build and push Role Authentication image
+      - name: 🛠️ Build and push Role Authentication image
         uses: docker/build-push-action@v4
         with:
           context: ./BackEnd/Domains/Auth/role-auth
@@ -31,7 +31,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/role-auth:latest
 
       # Login Image
-      - name: Build and push Login image
+      - name: 🛠️ Build and push Login image
         uses: docker/build-push-action@v4
         with:
           context: ./BackEnd/Domains/Auth/Login
@@ -40,7 +40,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/login:latest
 
       # Logout Image
-      - name: Build and push Logout image
+      - name: 🛠️ Build and push Logout image
         uses: docker/build-push-action@v4
         with:
           context: ./BackEnd/Domains/Auth/Logout
