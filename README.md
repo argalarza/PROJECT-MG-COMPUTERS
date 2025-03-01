@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## 🚀 **The Project is still on development**
 
 # 🎸 **Global Tune - E-Commerce Platform**  
@@ -32,3 +33,7 @@ Welcome to **Global Tune**, an international e-commerce platform dedicated to pr
 - **Authentication & Security**: JWT for secure sessions, CORS policies, and encrypted APIs.  
 - **DevOps**: CI/CD pipelines, containerized microservices with Docker, and GitHub Actions for automation.  
 - **Monitoring**: Grafana, Prometheus, and AWS CloudWatch for real-time alerts and insights.  
+=======
+# PROJECT-MG-COMPUTERS
+E-COMMERCE MY BUSINESS
+>>>>>>> 8db40481b01949dbe5ed46c38e1ab4d5bda666a2
