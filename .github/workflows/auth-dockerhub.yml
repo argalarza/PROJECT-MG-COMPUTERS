@@ -9,7 +9,7 @@ on:
 
 jobs:
   push_to_registry:
-    name: 📦 Push Docker Images to Docker Hub 🌍
+    name: 📦 Push Docker Images to Docker Hub. 🌍
     runs-on: amazon-linux-2  # Cambiado a Amazon Linux en lugar de Ubuntu
     steps:
       - name: 📂 Check out the repository
