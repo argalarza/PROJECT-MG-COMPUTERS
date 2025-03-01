@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "🛠️ Creating Docker network for app...."
+            echo "🛠️ Creating Docker network for app....s."
             sudo docker network create app-network
 
             echo "🔄 Pulling latest image for Role Authentication..."
