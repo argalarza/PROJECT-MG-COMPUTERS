@@ -14,4 +14,4 @@ func GetCORSConfig() gin.HandlerFunc {
 	})
 	return corsConfig
 }
-///
+////

@@ -44,4 +44,4 @@ func (service *LogoutServiceImpl) LogoutUser(logoutReq request.Request) (int, re
 	return http.StatusOK, response.Response{Message: "Logged out successfully"}, cookie
 
 }
-//s
+///
