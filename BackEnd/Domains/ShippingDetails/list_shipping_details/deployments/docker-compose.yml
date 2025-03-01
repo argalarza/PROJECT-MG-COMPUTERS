@@ -1,0 +1,30 @@
+services:
+  shipping_details-db:
+    image: "${DOCKER_USERNAME}/shipping-details-db:latest"
+    container_name: shipping_details-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+  list_shipping_details:
+    image: "${DOCKER_USERNAME}/list-shipping-details:latest"
+    container_name: list_shipping_details
+    ports:
+      - "80:80"
+    environment:
+      GIN_MODE: "${GIN_MODE}"
+      shipping_details_URI: "${shipping_details_URI}"
+      shipping_details_BROKER: "${shipping_details_BROKER}"
+    networks:
+      - app-network
+    restart: unless-stopped
+    depends_on:
+      - shipping_details-db
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,73 @@
+name: Run Auth Services on AWS EC2
+
+on:
+  push:
+    branches:
+      - qa-aws-deploy
+    paths:
+      - 'BackEnd/Domains/Auth/**'
+      - '.github/workflows/auth-deploy.yml'
+
+jobs:
+  deploy:
+    name: Deploy Services on AWS EC2
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Deploy to EC2 - Role Authentication
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST_AUTH }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo docker network create app-network  
+            echo "Pulling latest image for Role Authentication..."
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/role-auth:latest
+
+            echo "Stopping and removing existing container..."
+            sudo docker stop role-auth || echo "No existing container"
+            sudo docker rm role-auth || echo "No existing container"
+
+            echo "Starting Role Auth container..."
+            sudo docker run -d --name role-auth \
+              -p 83:80 \
+              -e SECRET_KEY=${{ secrets.AUTH_SECRET_KEY }} \
+              --network app-network \
+              --restart unless-stopped \
+              ${{ secrets.DOCKER_USERNAME }}/role-auth:latest
+
+            echo "Pulling latest image for Login..."
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/login:latest
+
+            echo "Stopping and removing existing container..."
+            sudo docker stop login || echo "No existing container"
+            sudo docker rm login || echo "No existing container"
+
+            echo "Starting Login container..."
+            sudo docker run -d --name login \
+              -p 443:443 \
+              -e SECRET_KEY=${{ secrets.AUTH_SECRET_KEY }} \
+              -e DB_HOST=${{ secrets.USERS_DB_HOST }} \
+              -e DB_USER=${{ secrets.USERS_DB_USER }} \
+              -e DB_PASSWORD=${{ secrets.USERS_DB_PASSWORD }} \
+              -e DB_PORT=${{ secrets.USERS_DB_PORT }} \
+              -e DB_NAME=${{ secrets.USERS_DB_NAME }} \
+              --network app-network \
+              --restart unless-stopped \
+              ${{ secrets.DOCKER_USERNAME }}/login:latest
+
+            echo "Pulling latest image for Logout..."
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/logout:latest
+
+            echo "Stopping and removing existing container..."
+            sudo docker stop logout || echo "No existing container"
+            sudo docker rm logout || echo "No existing container"
+
+            echo "Starting Logout container..."
+            sudo docker run -d --name logout \
+              -p 82:80 \
+              -e SECRET_KEY=${{ secrets.AUTH_SECRET_KEY }} \
+              --network app-network \
+              --restart unless-stopped \
+              ${{ secrets.DOCKER_USERNAME }}/logout:latest

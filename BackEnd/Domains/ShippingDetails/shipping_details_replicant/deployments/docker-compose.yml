@@ -1,0 +1,22 @@
+services:
+
+
+  shipping_details_replicant:
+    image: mates182/shipping-details-replicant
+    ports:
+      - "8080:80"
+    container_name: shipping_details_replicant
+    environment:
+      - GIN_MODE=release
+      - shipping_details_BROKER=http://18.204.201.238:29092
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+    depends_on:
+      - kafka
+
+networks:
+  app-network:
+    driver: bridge
