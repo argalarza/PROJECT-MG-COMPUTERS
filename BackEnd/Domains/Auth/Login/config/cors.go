@@ -14,3 +14,4 @@ func GetCORSConfig() gin.HandlerFunc {
 	}
 	return cors.New(corsConfig)
 }
+//
