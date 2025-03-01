@@ -3,6 +3,7 @@ name: 🖥️ Run Auth Services on AWS EC2 🚀
 on:
   push:
     branches:
+      - main
       - qa-aws-deploy
     paths:
       - 'BackEnd/Domains/Auth/**'
