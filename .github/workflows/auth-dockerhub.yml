@@ -3,7 +3,7 @@ name: 🚀 Push Auth Services to Docker Hub 🐳
 on:
   push:
     branches:
-      - qa-aws-deploy
+      - main
     paths:
       - 'BackEnd/Domains/Auth/**'
 
